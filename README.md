@@ -1,106 +1,56 @@
 # openwashdata Interactive Quizzes
 
-This repository contains interactive quizzes for learning openwashdata package development using Quarto Live.
+Interactive quizzes for learning openwashdata package development using Quarto Live.
 
-## Features
+## Quick Start
 
-- **Interactive Code Execution**: Run R code directly in your browser using WebAssembly
-- **No Installation Required**: Works entirely in the browser - no R installation needed
-- **Self-Paced Learning**: Hints and solutions available for all exercises
-- **Modern Web Interface**: Built with Quarto and pkgdown for a clean, responsive design
-
-## Setup
-
-### Prerequisites
-
-- R (4.0 or higher)
-- Quarto CLI
-- Git
-
-### Installation
-
-1. Clone this repository:
 ```bash
+# Clone repository
 git clone https://github.com/ds4owd-dev/quiz.git
 cd quiz
-```
 
-2. Install R dependencies using renv:
-```r
+# Install dependencies
 renv::restore()
-```
 
-3. The quarto-live extension is already included in the repository.
-
-## Building the Site
-
-### Local Development
-
-To render the site locally:
-
-```bash
+# Build site
 quarto render
+
+# Preview locally
+quarto preview
 ```
 
-The site will be built in the `docs/` directory. You can preview it by opening `docs/index.html` in your browser.
+## Development
 
-### Building with pkgdown
+### Create a new quiz
 
-To build the full pkgdown site:
-
-```r
-pkgdown::build_site()
-```
-
-## Deployment
-
-The site is automatically deployed to GitHub Pages using GitHub Actions. Simply push to the `main` branch, and the site will be updated.
-
-## Creating New Quizzes
-
-To create a new quiz:
-
-1. Create a new `.qmd` file (e.g., `md-02-quiz.qmd`)
-2. Use the following template:
+1. Create a new `.qmd` file:
 
 ```markdown
 ---
 title: "Your Quiz Title"
-format: live-html
+format:
+  live-html:
+    resources:
+      - _extensions/r-wasm/live/resources
 engine: knitr
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Your quiz content here
+## Your quiz content
 
 ```{webr}
-# Interactive R code block
+# Interactive R code
 ```
 ```
 
-3. Add a link to your quiz in `index.qmd`
-4. Update `_pkgdown.yml` to include the new quiz in the navigation
+2. Add link in `index.qmd`
+3. Run `quarto render`
 
-## Repository Structure
+## Deployment
 
-```
-quiz/
-├── _extensions/          # Quarto extensions (quarto-live)
-├── .github/             # GitHub Actions workflows
-├── renv/                # R package management
-├── _pkgdown.yml         # pkgdown configuration
-├── _quarto.yml          # Quarto website configuration
-├── index.qmd            # Home page
-├── md-01-quiz.qmd       # Module 1 quiz
-├── styles.css           # Custom CSS styles
-└── README.md            # This file
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+Push to `main` branch - GitHub Actions handles deployment to GitHub Pages.
 
 ## License
 
-This project is part of the openwashdata initiative. See LICENSE for details.
+Part of the openwashdata initiative.
