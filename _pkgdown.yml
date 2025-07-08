@@ -20,7 +20,7 @@ navbar:
       text: Quizzes
       menu:
       - text: 'Module 1: Quarto Basics'
-        href: md-01-quiz.html
+        href: articles/md-01-quiz.html
     github:
       icon: fa-github
       href: https://github.com/ds4owd-dev/quiz

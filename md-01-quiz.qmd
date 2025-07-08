@@ -4,7 +4,7 @@ format: live-html
 engine: knitr
 ---
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
 
 ## Introduction
 
@@ -22,19 +22,24 @@ Which of the following is the correct YAML header for an openwashdata package RE
 # Select the correct YAML header format
 ```
 
-::: {.callout-note}
+::: callout-note
 ## Hint
+
 Think about what output format is typically used for GitHub README files.
 :::
 
 <details>
+
 <summary>Solution</summary>
+
 The correct YAML header for a README.qmd file is:
-```yaml
+
+``` yaml
 ---
 output: github_document
 ---
 ```
+
 </details>
 
 ### Question 2: pkgdown Configuration
@@ -48,16 +53,20 @@ answer <- "_____"
 print(answer)
 ```
 
-::: {.callout-note}
+::: callout-note
 ## Hint
+
 The configuration file starts with an underscore and has a .yml extension.
 :::
 
 <details>
+
 <summary>Solution</summary>
-```r
+
+``` r
 answer <- "_pkgdown.yml"
 ```
+
 </details>
 
 ## Section 2: Code Chunks and Options
@@ -72,18 +81,22 @@ Create a code chunk that loads the tidyverse package but hides both the code and
 # Use the code chunk option comments to specify hiding code and messages
 ```
 
-::: {.callout-note}
+::: callout-note
 ## Hint
+
 In Quarto, you can use `#| include: false` to hide both code and output, or `#| echo: false` and `#| message: false` separately.
 :::
 
 <details>
+
 <summary>Solution</summary>
-```r
+
+``` r
 #| echo: false
 #| message: false
 library(tidyverse)
 ```
+
 </details>
 
 ### Question 4: Creating Tables
@@ -99,23 +112,27 @@ library(gapminder)
 # Your code here
 ```
 
-::: {.callout-note}
+::: callout-note
 ## Hint
-1. Filter the data for year 2007
-2. Group by continent
-3. Summarize to calculate mean life expectancy
-4. You can use `knitr::kable()` to format the table nicely
+
+1.  Filter the data for year 2007
+2.  Group by continent
+3.  Summarize to calculate mean life expectancy
+4.  You can use `knitr::kable()` to format the table nicely
 :::
 
 <details>
+
 <summary>Solution</summary>
-```r
+
+``` r
 gapminder %>%
   filter(year == 2007) %>%
   group_by(continent) %>%
   summarise(avg_life_exp = mean(lifeExp)) %>%
   knitr::kable(digits = 1)
 ```
+
 </details>
 
 ## Section 3: Data Analysis Integration
@@ -156,17 +173,20 @@ large_african_countries <- gapminder %>%
 # Your code here
 ```
 
-::: {.callout-note}
+::: callout-note
 ## Hint
-1. Filter for the countries identified above
-2. Use `ggplot()` with `geom_line()`
-3. Map year to x-axis, lifeExp to y-axis, and country to color
-4. Add appropriate labels
+
+1.  Filter for the countries identified above
+2.  Use `ggplot()` with `geom_line()`
+3.  Map year to x-axis, lifeExp to y-axis, and country to color
+4.  Add appropriate labels
 :::
 
 <details>
+
 <summary>Solution</summary>
-```r
+
+``` r
 gapminder %>%
   filter(country %in% large_african_countries) %>%
   ggplot(aes(x = year, y = lifeExp, color = country)) +
@@ -178,15 +198,16 @@ gapminder %>%
        color = "Country") +
   theme_minimal()
 ```
+
 </details>
 
 ## Summary
 
 This quiz covered essential Quarto skills for openwashdata package documentation:
 
-1. **YAML Headers**: Configuring document output formats
-2. **Code Chunks**: Managing code execution and output display
-3. **Data Integration**: Combining narrative text with R analysis
-4. **Visualization**: Creating informative plots within documents
+1.  **YAML Headers**: Configuring document output formats
+2.  **Code Chunks**: Managing code execution and output display
+3.  **Data Integration**: Combining narrative text with R analysis
+4.  **Visualization**: Creating informative plots within documents
 
 Remember that Quarto documents can be rendered to multiple formats, making them ideal for creating both package documentation and interactive tutorials like this one!
