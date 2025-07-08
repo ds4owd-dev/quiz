@@ -8,15 +8,21 @@ Interactive quizzes for learning openwashdata package development using Quarto L
 # Clone repository
 git clone https://github.com/ds4owd-dev/quiz.git
 cd quiz
+```
 
-# Install dependencies
+```r
+# Install dependencies in R
 renv::restore()
+```
 
+```bash
 # Build site
 quarto render
 
-# Preview locally
+# Preview locally (choose one)
 quarto preview
+# OR use the Python server
+python3 serve.py
 ```
 
 ## Development

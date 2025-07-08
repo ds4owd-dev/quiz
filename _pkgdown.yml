@@ -21,12 +21,6 @@ navbar:
       menu:
       - text: 'Module 1: Quarto Basics'
         href: md-01-quiz.html
-      - text: '-------'
-      - text: Coming Soon
-      - text: 'Module 2: Package Structure'
-      - text: 'Module 3: Data Documentation'
-      - text: 'Module 4: pkgdown Customization'
-      - text: 'Module 5: GitHub Actions'
     github:
       icon: fa-github
       href: https://github.com/ds4owd-dev/quiz

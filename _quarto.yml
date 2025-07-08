@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - _extensions/r-wasm/live/resources
   
 website:
   title: "openwashdata Quizzes"
