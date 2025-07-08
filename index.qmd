@@ -1,0 +1,50 @@
+---
+title: "openwashdata Quizzes"
+format: html
+---
+
+## Welcome to openwashdata Interactive Quizzes
+
+This site contains interactive quizzes to help you learn about creating and maintaining openwashdata packages. Each quiz covers different aspects of package development, documentation, and best practices.
+
+## Available Quizzes
+
+### Module 1: Quarto Basics
+
+Learn the fundamentals of using Quarto for openwashdata package documentation.
+
+- **Topics covered:**
+  - YAML headers and document configuration
+  - Code chunks and execution options
+  - Data analysis integration
+  - Creating tables and visualizations
+
+[**Start Module 1 Quiz →**](md-01-quiz.html)
+
+---
+
+## How to Use These Quizzes
+
+1. Each quiz contains interactive R code blocks that run directly in your browser
+2. You can modify and run the code to test your understanding
+3. Hints are provided for each question
+4. Solutions are available if you get stuck
+
+## Technical Requirements
+
+These quizzes use [Quarto Live](https://r-wasm.github.io/quarto-live/) which runs R code directly in your web browser using WebAssembly. No R installation is required!
+
+- **Supported browsers:** Chrome, Firefox, Safari (latest versions)
+- **Internet connection:** Required for initial loading
+- **JavaScript:** Must be enabled
+
+## Coming Soon
+
+- Module 2: Package Structure and Organization
+- Module 3: Data Documentation Best Practices
+- Module 4: pkgdown Website Customization
+- Module 5: GitHub Actions and CI/CD
+
+---
+
+*These quizzes are part of the openwashdata initiative. For more information, visit [openwashdata.org](https://openwashdata.org).*

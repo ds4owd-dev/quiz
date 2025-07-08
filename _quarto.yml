@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: docs
+  
+website:
+  title: "openwashdata Quizzes"
+  navbar:
+    background: primary
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Quizzes"
+        menu:
+          - text: "Module 1: Quarto Basics"
+            href: md-01-quiz.qmd
+          - text: "---"
+          - text: "More coming soon..."
+    right:
+      - icon: github
+        href: https://github.com/ds4owd-dev/quiz
+        
+format:
+  html:
+    theme: 
+      - sandstone
+      - custom.scss
+    css: styles.css
+    toc: true
+    
+execute:
+  freeze: auto
