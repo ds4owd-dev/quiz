@@ -15,8 +15,6 @@ website:
         menu:
           - text: "Module 1: Quarto Basics"
             href: md-01-quiz.qmd
-          - text: "---"
-          - text: "More coming soon..."
     right:
       - icon: github
         href: https://github.com/ds4owd-dev/quiz
@@ -24,9 +22,7 @@ website:
 format:
   html:
     theme: 
-      - sandstone
-      - custom.scss
-    css: styles.css
+      - cosmo
     toc: true
     
 execute:

@@ -5,6 +5,6 @@
 
 .DS_Store
 /.quarto/
-_freeze
+_freeze/
 docs/
 !docs/*.md
