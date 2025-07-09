@@ -9,17 +9,17 @@ This site contains interactive quizzes to help you learn about creating and main
 
 ## Available Quizzes
 
-### Module 1: Quarto Basics
+### [Module 1: Quarto Basics](md-01-quiz.html)
 
-Learn the fundamentals of using Quarto for openwashdata package documentation.
+```{r, include=FALSE, cache=FALSE}
+knitr::read_chunk('md-01-quiz.qmd')
+```
 
 -   **Topics covered:**
     -   YAML headers and document configuration
     -   Code chunks and execution options
     -   Data analysis integration
     -   Creating tables and visualizations
-
-[**Start Module 1 Quiz →**](md-01-quiz.html)
 
 ------------------------------------------------------------------------
 

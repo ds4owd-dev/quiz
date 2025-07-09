@@ -1,6 +1,8 @@
 ---
 title: "Module 1 Quiz: Quarto Basics for openwashdata"
-format: live-html
+format: 
+  live-html:
+    theme: cosmo
 engine: knitr
 ---
 
