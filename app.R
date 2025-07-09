@@ -2,7 +2,6 @@
 
 library(shiny)
 library(bslib)
-library(rmarkdown)
 
 # Define available quizzes
 quizzes <- list(
@@ -27,9 +26,11 @@ quizzes <- list(
 ui <- page_navbar(
   title = "openwashdata Quizzes",
   theme = bs_theme(bootswatch = "cosmo"),
+  id = "navbar",
   
   nav_panel(
     "Home",
+    value = "home",
     div(
       class = "container mt-5",
       div(
@@ -74,6 +75,16 @@ ui <- page_navbar(
   ),
   
   nav_panel(
+    "Quiz",
+    value = "quiz",
+    div(
+      id = "quiz-container",
+      class = "container mt-3",
+      uiOutput("quiz_content")
+    )
+  ),
+  
+  nav_panel(
     "About",
     div(
       class = "container mt-5",
@@ -102,7 +113,7 @@ ui <- page_navbar(
           ),
           
           h3("Technical Requirements"),
-          p("These quizzes run entirely in your web browser using WebR technology. No R installation is required on your computer.")
+          p("These quizzes require an R installation and the necessary packages installed on the server.")
         )
       )
     )
@@ -112,17 +123,65 @@ ui <- page_navbar(
 # Server
 server <- function(input, output, session) {
   
+  # Reactive value to store current quiz
+  current_quiz <- reactiveVal(NULL)
+  
   # Handle quiz launches
   lapply(quizzes, function(quiz) {
     if (quiz$available) {
       observeEvent(input[[paste0("start_", quiz$id)]], {
-        # Run the quiz in a new browser window/tab
-        # This maintains the landing page while opening the quiz
-        browseURL(paste0("http://127.0.0.1:", session$clientData$url_port, "/", quiz$file))
+        # Store the current quiz
+        current_quiz(quiz)
+        
+        # Switch to quiz panel
+        updateNavbarPage(session, "navbar", selected = "quiz")
       })
     }
   })
   
+  # Render quiz content
+  output$quiz_content <- renderUI({
+    quiz <- current_quiz()
+    
+    if (is.null(quiz)) {
+      div(
+        class = "text-center mt-5",
+        h3("No quiz selected"),
+        p("Please return to the home page and select a quiz to begin."),
+        actionButton("back_to_home", "Back to Home", class = "btn btn-primary")
+      )
+    } else {
+      div(
+        div(
+          class = "d-flex justify-content-between align-items-center mb-4",
+          h2(quiz$title),
+          actionButton("back_to_home2", "Back to Home", class = "btn btn-secondary")
+        ),
+        div(
+          class = "alert alert-info",
+          p(strong("Note:"), " This quiz requires launching in a separate window. Click the button below to open the interactive quiz."),
+          tags$a(
+            href = quiz$file,
+            target = "_blank",
+            class = "btn btn-primary",
+            "Open Quiz in New Tab"
+          )
+        ),
+        hr(),
+        p("If the quiz doesn't open automatically, you can access it directly at:"),
+        code(quiz$file)
+      )
+    }
+  })
+  
+  # Handle back to home buttons
+  observeEvent(input$back_to_home, {
+    updateNavbarPage(session, "navbar", selected = "home")
+  })
+  
+  observeEvent(input$back_to_home2, {
+    updateNavbarPage(session, "navbar", selected = "home")
+  })
 }
 
 # Create Shiny app
