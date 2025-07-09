@@ -1,0 +1,219 @@
+---
+title: "Module 1 Quiz: Quarto Basics for openwashdata"
+output: learnr::tutorial
+runtime: shiny_prerendered
+description: "Test your understanding of Quarto basics for openwashdata package documentation"
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(gapminder)
+library(knitr)
+library(gradethis)
+
+# Enable exercise checking
+tutorial_options(
+  exercise.eval = FALSE,
+  exercise.checker = gradethis::grade_learnr
+)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+This quiz tests your understanding of Quarto basics for openwashdata package documentation. The quiz covers YAML headers, code chunks, and data analysis integration.
+
+## Section 1: Quarto Fundamentals
+
+### Question 1: YAML Header
+
+```{r yaml-question}
+question("Which of the following is the correct YAML header for an openwashdata package README?",
+  answer("---\noutput: html_document\n---"),
+  answer("---\noutput: github_document\n---", correct = TRUE),
+  answer("---\nformat: html\n---"),
+  answer("---\nformat: markdown\n---"),
+  allow_retry = TRUE,
+  incorrect = "Think about what output format is typically used for GitHub README files.",
+  correct = "Correct! The github_document output format is used for README files that will be displayed on GitHub."
+)
+```
+
+### Question 2: pkgdown Configuration
+
+```{r pkgdown-question}
+question("What file is used to configure the pkgdown website for an openwashdata package?",
+  answer("pkgdown.yml"),
+  answer("_pkgdown.yml", correct = TRUE),
+  answer("config.yml"),
+  answer("_config.yml"),
+  allow_retry = TRUE,
+  incorrect = "The configuration file starts with an underscore and has a .yml extension.",
+  correct = "Correct! The _pkgdown.yml file is used to configure pkgdown websites."
+)
+```
+
+## Section 2: Code Chunks and Options
+
+### Question 3: Code Chunk Options
+
+```{r chunk-options-question}
+question("Which chunk options would you use to hide both code and messages when loading tidyverse?",
+  answer("`echo = TRUE, message = TRUE`"),
+  answer("`echo = FALSE, message = FALSE`", correct = TRUE),
+  answer("`include = TRUE`"),
+  answer("`eval = FALSE`"),
+  allow_retry = TRUE,
+  incorrect = "In Quarto, you can use `#| echo: false` and `#| message: false` to hide code and messages.",
+  correct = "Correct! Setting echo = FALSE hides the code and message = FALSE hides the messages."
+)
+```
+
+### Question 4: Creating Tables
+
+Use the gapminder dataset to create a summary table showing the average life expectancy by continent in 2007:
+
+```{r create-table-setup}
+library(tidyverse)
+library(gapminder)
+library(knitr)
+```
+
+```{r create-table, exercise=TRUE, exercise.lines=10}
+# Create a summary table of average life expectancy by continent for 2007
+# Your code here
+```
+
+```{r create-table-hint-1}
+# Start by filtering for year 2007
+gapminder %>%
+  filter(year == 2007)
+```
+
+```{r create-table-hint-2}
+# Then group by continent and calculate mean
+gapminder %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  summarise(avg_life_exp = mean(lifeExp))
+```
+
+```{r create-table-solution}
+gapminder %>%
+  filter(year == 2007) %>%
+  group_by(continent) %>%
+  summarise(avg_life_exp = mean(lifeExp)) %>%
+  knitr::kable(digits = 1)
+```
+
+```{r create-table-check}
+grade_this_code()
+```
+
+## Section 3: Data Analysis Integration
+
+### Question 5: Inline Code
+
+Calculate the mean GDP per capita for Switzerland in 2007:
+
+```{r inline-code-setup}
+library(tidyverse)
+library(gapminder)
+```
+
+```{r inline-code, exercise=TRUE, exercise.lines=10}
+# Calculate Switzerland's GDP per capita in 2007
+swiss_gdp_2007 <- gapminder %>%
+  filter(country == "Switzerland", year == 2007) %>%
+  pull(gdpPercap)
+
+# Display the result
+paste("Switzerland's GDP per capita in 2007 was $", 
+      format(swiss_gdp_2007, big.mark = ","), sep = "")
+```
+
+```{r inline-code-solution}
+swiss_gdp_2007 <- gapminder %>%
+  filter(country == "Switzerland", year == 2007) %>%
+  pull(gdpPercap)
+
+paste("Switzerland's GDP per capita in 2007 was $", 
+      format(swiss_gdp_2007, big.mark = ","), sep = "")
+```
+
+```{r inline-code-check}
+grade_this_code()
+```
+
+### Question 6: Data Visualization
+
+Create a line plot showing the life expectancy over time for African countries with a population greater than 30 million in 2007:
+
+```{r visualization-setup}
+library(tidyverse)
+library(gapminder)
+
+# Identify African countries with population > 30 million in 2007
+large_african_countries <- gapminder %>%
+  filter(continent == "Africa", year == 2007, pop > 30000000) %>%
+  pull(country)
+```
+
+```{r visualization, exercise=TRUE, exercise.lines=15}
+# Create the plot
+# Your code here
+```
+
+```{r visualization-hint-1}
+# Start by filtering for the large African countries
+gapminder %>%
+  filter(country %in% large_african_countries)
+```
+
+```{r visualization-hint-2}
+# Then create a ggplot with appropriate aesthetics
+gapminder %>%
+  filter(country %in% large_african_countries) %>%
+  ggplot(aes(x = year, y = lifeExp, color = country))
+```
+
+```{r visualization-solution}
+gapminder %>%
+  filter(country %in% large_african_countries) %>%
+  ggplot(aes(x = year, y = lifeExp, color = country)) +
+  geom_line() +
+  labs(title = "Life Expectancy Over Time",
+       subtitle = "African countries with population > 30 million in 2007",
+       x = "Year",
+       y = "Life Expectancy (years)",
+       color = "Country") +
+  theme_minimal()
+```
+
+```{r visualization-check}
+grade_this_code()
+```
+
+## Summary
+
+This quiz covered essential Quarto skills for openwashdata package documentation:
+
+1. **YAML Headers**: Configuring document output formats
+2. **Code Chunks**: Managing code execution and output display
+3. **Data Integration**: Combining narrative text with R analysis
+4. **Visualization**: Creating informative plots within documents
+
+Remember that Quarto documents can be rendered to multiple formats, making them ideal for creating both package documentation and interactive tutorials like this one!
+
+## Quiz Submission
+
+```{r context="server"}
+# This section can be used to save quiz results
+# You can implement custom saving logic here
+observeEvent(input$submit, {
+  # Collect all answers and save them
+  # This is where you would implement your score saving logic
+})
+```
