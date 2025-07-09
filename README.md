@@ -1,62 +1,49 @@
-# openwashdata Interactive Quizzes
+# openwashdata Course Quizzes
 
-Interactive quizzes for learning openwashdata package development using Quarto Live.
+This directory contains interactive learnr quizzes for the openwashdata course.
 
-## Quick Start
+## Structure
 
-```bash
-# Clone repository
-git clone https://github.com/ds4owd-dev/quiz.git
-cd quiz
-```
+- `app.R` - Quiz landing page that lists all available quizzes
+- `md-01-quiz.Rmd` - Module 1 quiz on Quarto basics
+- Additional quiz files can be added as `md-XX-quiz.Rmd`
+
+## Running the Quiz System
+
+To run the quiz landing page locally:
 
 ```r
-# Install dependencies in R
-renv::restore()
+shiny::runApp()
 ```
 
-```bash
-# Build site
-quarto render
+Or to run a specific quiz directly:
 
-# Preview locally (choose one)
-quarto preview
-# OR use the Python server
-python3 serve.py
+```r
+rmarkdown::run("md-01-quiz.Rmd")
 ```
 
-## Development
+## Adding New Quizzes
 
-### Create a new quiz
+1. Create a new learnr quiz file (e.g., `md-02-quiz.Rmd`)
+2. Add the quiz to the `quizzes` list in `app.R`:
 
-1. Create a new `.qmd` file:
-
-```markdown
----
-title: "Your Quiz Title"
-format:
-  live-html:
-    resources:
-      - _extensions/r-wasm/live/resources
-engine: knitr
----
-
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
-
-## Your quiz content
-
-```{webr}
-# Interactive R code
-```
+```r
+list(
+  id = "module2",
+  title = "Module 2: Your Title",
+  description = "Quiz description",
+  file = "md-02-quiz.Rmd",
+  available = TRUE
+)
 ```
 
-2. Add link in `index.qmd`
-3. Run `quarto render`
+## Required Packages
 
-## Deployment
-
-Push to `main` branch - GitHub Actions handles deployment to GitHub Pages.
-
-## License
-
-Part of the openwashdata initiative.
+- shiny
+- bslib
+- learnr
+- tidyverse
+- gapminder
+- knitr
+- gradethis
+- rmarkdown
