@@ -152,13 +152,15 @@ form_url <- "https://docs.google.com/forms/d/e/1FAIpQLScnw9R8wMU5SfFqNVXGeEkiIyg
 
 Your introduction text here.
 
-{{< include _github_username.Rmd >}}
+`​``{r github-username, child='_github_username.Rmd'}
+`​``
 
 ## Your Quiz Content
 
 Add your questions and exercises here...
 
-{{< include _submission.Rmd >}}
+`​``{r submission-section, child='_submission.Rmd'}
+`​``
 
 ## Summary
 

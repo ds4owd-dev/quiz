@@ -34,7 +34,8 @@ This quiz tests your understanding of Quarto basics for openwashdata package doc
 
 **Important**: Please enter your GitHub username below and click "Submit Quiz" at the end to record your completion.
 
-{{< include _github_username.Rmd >}}
+```{r github-username, child='_github_username.Rmd'}
+```
 
 ## Section 1: Quarto Fundamentals
 
@@ -207,7 +208,8 @@ gapminder %>%
 grade_this_code()
 ```
 
-{{< include _submission.Rmd >}}
+```{r submission-section, child='_submission.Rmd'}
+```
 
 ## Summary
 
