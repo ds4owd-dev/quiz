@@ -9,6 +9,8 @@ This directory contains interactive learnr quizzes for the openwashdata course a
 - `app.R` - Quiz landing page that links to all deployed quizzes
 - `modules/` - Directory containing all quiz files
   - `md-01-quiz.Rmd` - Module 1 quiz on Quarto basics (learnr tutorial)
+  - `_github_username.Rmd` - Reusable component for GitHub username input
+  - `_submission.Rmd` - Reusable component for quiz submission
   - Additional quiz files can be added as `md-XX-quiz.Rmd`
 
 ## Required Packages
@@ -16,13 +18,14 @@ This directory contains interactive learnr quizzes for the openwashdata course a
 Make sure these packages are installed:
 
 ```r
-install.packages(c("learnr", "tidyverse", "gapminder", "knitr", "rsconnect"))
+install.packages(c("learnr", "tidyverse", "gapminder", "knitr", "rsconnect", "httr", "digest"))
 
-# Install gradethis from GitHub
+# Install packages from GitHub
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
 }
 remotes::install_github("rstudio/gradethis")
+remotes::install_github("rundel/learnrhash")
 ```
 
 ## ShinyApps.io Authentication
@@ -41,6 +44,37 @@ rsconnect::setAccountInfo(
 ```
 
 Replace `your-account-name`, `YOUR-TOKEN-HERE`, and `YOUR-SECRET-HERE` with your actual credentials.
+
+## Google Form Integration
+
+The quizzes now include automatic submission to Google Forms for tracking student progress:
+
+### Features
+- **GitHub username collection**: Students enter their GitHub username at the start
+- **Learnrhash generation**: Quiz responses are encoded using learnrhash
+- **Automatic submission**: Results are submitted to Google Form via POST request
+- **Error handling**: Provides fallback hash if submission fails
+- **Modular components**: Reusable username and submission components
+
+### Google Form Setup
+- **Form URL**: https://docs.google.com/forms/d/e/1FAIpQLScnw9R8wMU5SfFqNVXGeEkiIygLTB_Dc6jWBmbwEeHuekBDzg/formResponse
+- **Entry IDs** (tidy format): 
+  - `entry.1315905314` - Raw learnrhash
+  - `entry.61564704` - GitHub username
+  - `entry.1169139257` - Module name
+- **Data structure**: Each submission creates a row with:
+  - Hash column: Complete learnrhash for decoding
+  - Username column: GitHub username for filtering
+  - Module column: Module identifier (fetched from tutorial ID metadata)
+- **Authentication**: None required - form accepts responses from anyone with the link
+
+### Advantages of Google Forms
+- **No authentication needed**: Forms can accept anonymous submissions
+- **Tidy data format**: Each field in its own column for easy analysis
+- **Reliable**: Google handles all the backend infrastructure
+- **Easy to view**: Responses automatically appear in Google Sheets
+- **Error-resistant**: Works even with network issues
+- **Easy filtering**: Separate columns for username and module
 
 ## Deployment Process
 
@@ -84,7 +118,52 @@ rsconnect::deployApp(
 
 To add a new quiz module:
 
-1. **Create the quiz file** (e.g., `md-02-quiz.Rmd`) following the learnr format
+1. **Create the quiz file** (e.g., `modules/md-02-quiz.Rmd`) using this template:
+
+```r
+---
+title: "Module 2: Your Title"
+output: learnr::tutorial
+runtime: shiny_prerendered
+description: "Your quiz description"
+tutorial:
+  id: "module2-your-id"
+---
+
+`​``{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(gradethis)
+library(learnrhash)
+library(httr)
+
+tutorial_options(
+  exercise.eval = FALSE,
+  exercise.checker = gradethis::grade_learnr
+)
+
+knitr::opts_chunk$set(echo = FALSE)
+
+# Google Form setup
+form_url <- "https://docs.google.com/forms/d/e/1FAIpQLScnw9R8wMU5SfFqNVXGeEkiIygLTB_Dc6jWBmbwEeHuekBDzg/formResponse"
+`​``
+
+## Introduction
+
+Your introduction text here.
+
+{{< include _github_username.Rmd >}}
+
+## Your Quiz Content
+
+Add your questions and exercises here...
+
+{{< include _submission.Rmd >}}
+
+## Summary
+
+Your summary here.
+```
 2. **Deploy the quiz**:
    ```r
    rsconnect::deployDoc(

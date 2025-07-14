@@ -3,6 +3,8 @@ title: "Module 1 Quiz: Quarto Basics for openwashdata"
 output: learnr::tutorial
 runtime: shiny_prerendered
 description: "Test your understanding of Quarto basics for openwashdata package documentation"
+tutorial:
+  id: "module1-quarto-basics"
 ---
 
 ```{r setup, include=FALSE}
@@ -11,6 +13,8 @@ library(tidyverse)
 library(gapminder)
 library(knitr)
 library(gradethis)
+library(learnrhash)
+library(httr)
 
 # Enable exercise checking
 tutorial_options(
@@ -19,11 +23,18 @@ tutorial_options(
 )
 
 knitr::opts_chunk$set(echo = FALSE)
+
+# Google Form setup
+form_url <- "https://docs.google.com/forms/d/e/1FAIpQLScnw9R8wMU5SfFqNVXGeEkiIygLTB_Dc6jWBmbwEeHuekBDzg/formResponse"
 ```
 
 ## Introduction
 
 This quiz tests your understanding of Quarto basics for openwashdata package documentation. The quiz covers YAML headers, code chunks, and data analysis integration.
+
+**Important**: Please enter your GitHub username below and click "Submit Quiz" at the end to record your completion.
+
+{{< include _github_username.Rmd >}}
 
 ## Section 1: Quarto Fundamentals
 
@@ -196,6 +207,8 @@ gapminder %>%
 grade_this_code()
 ```
 
+{{< include _submission.Rmd >}}
+
 ## Summary
 
 This quiz covered essential Quarto skills for openwashdata package documentation:
@@ -206,14 +219,3 @@ This quiz covered essential Quarto skills for openwashdata package documentation
 4. **Visualization**: Creating informative plots within documents
 
 Remember that Quarto documents can be rendered to multiple formats, making them ideal for creating both package documentation and interactive tutorials like this one!
-
-## Quiz Submission
-
-```{r context="server"}
-# This section can be used to save quiz results
-# You can implement custom saving logic here
-observeEvent(input$submit, {
-  # Collect all answers and save them
-  # This is where you would implement your score saving logic
-})
-```
