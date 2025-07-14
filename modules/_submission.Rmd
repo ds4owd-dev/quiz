@@ -1,0 +1,72 @@
+## Quiz Submission
+
+Please click the button below to submit your quiz results:
+
+```{r submission, echo=FALSE}
+actionButton("submit", "Submit Quiz", class = "btn-primary btn-lg")
+
+# Submission status
+textOutput("submission_status")
+```
+
+```{r, context="server"}
+# Handle quiz submission
+observeEvent(input$submit, {
+  
+  # Get GitHub username
+  github_username <- input$github_username
+  
+  if (is.null(github_username) || github_username == "") {
+    output$submission_status <- renderText({
+      "Please enter your GitHub username before submitting."
+    })
+    return()
+  }
+  
+  # Generate learnrhash
+  tryCatch({
+    # Get tutorial state and generate hash
+    state <- learnr::get_tutorial_state()
+    learnrhash_submission <- learnrhash::encode_obj(state)
+    
+    # Get tutorial info
+    tutorial_info <- learnr::get_tutorial_info()
+    tutorial_id <- ifelse(is.null(tutorial_info$tutorial_id), "unknown", tutorial_info$tutorial_id)
+
+    
+    # Prepare form data for Google Form with separate fields
+    form_data <- list(
+      "entry.1315905314" = learnrhash_submission,  # Raw learnrhash only
+      "entry.61564704" = github_username,           # GitHub username
+      "entry.1169139257" = tutorial_id              # Module name
+    )
+    
+    # Submit to Google Form
+    response <- httr::POST(form_url, body = form_data, encode = "form")
+    
+    # Check response
+    if (httr::status_code(response) %in% c(200, 302)) {
+      output$submission_status <- renderText({
+        paste("Quiz submitted successfully at", Sys.time(), 
+              "\nModule:", tutorial_id,
+              "\nYour submission hash:", learnrhash_submission)
+      })
+    } else {
+      output$submission_status <- renderText({
+        paste("Submission may have failed. Please save this hash and contact your instructor:", 
+              learnrhash_submission)
+      })
+    }
+    
+  }, error = function(e) {
+    # Fallback: show hash to student
+    state <- learnr::get_tutorial_state()
+    fallback_hash <- digest::digest(state, algo = "sha256")
+    
+    output$submission_status <- renderText({
+      paste("Error submitting quiz. Please save this hash and contact your instructor:", 
+            fallback_hash)
+    })
+  })
+})
+```
