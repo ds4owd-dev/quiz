@@ -1,0 +1,43 @@
+---
+title: "example"
+output: html_document
+---
+
+```{r}
+# First, define the missing helper function
+fix_empty_state_obj = function(obj) {
+  if (length(obj) == 0) {
+    list(
+      list(
+        id = NA_character_,
+        type = NA_character_,
+        data = NULL
+      )
+    )
+  } else {
+    obj
+  }
+}
+
+# Updated extract_hash function with modern tidyselect syntax
+extract_hash_fixed = function(df, hash = "hash") {
+  d = df  |> 
+    dplyr::rename(hash = all_of(hash))  |> 
+    dplyr::mutate(
+      hash = lapply(hash, learnrhash::decode_obj),
+      hash = lapply(hash, fix_empty_state_obj)
+    )  |> 
+    tidyr::unnest_longer(hash)  |> 
+    tidyr::unnest_wider(hash)
+    # Removed the problematic relocate line for now
+  
+  if (is.null(d[["data"]]))
+    d$data = list(NULL)
+  
+  d
+}
+
+# Test it
+example = readRDS(system.file("example.rds", package="learnrhash"))
+extract_hash_fixed(example)
+```
