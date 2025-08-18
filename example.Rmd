@@ -41,3 +41,7 @@ extract_hash_fixed = function(df, hash = "hash") {
 example = readRDS(system.file("example.rds", package="learnrhash"))
 extract_hash_fixed(example)
 ```
+```{r}
+quiz_example <- read.csv("quiz_example.csv")
+extract_hash_fixed(quiz_example)
+```
