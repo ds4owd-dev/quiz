@@ -13,12 +13,19 @@ URL: https://github.com/ds4owd-dev/quiz,
 BugReports: https://github.com/ds4owd-dev/quiz/issues
 Imports:
     learnr,
-    tidyverse,
+    dplyr,
     gapminder,
     gt,
-    gradethis
+    gradethis,
+    learnrhash,
+    httr,
+    knitr,
+    rmarkdown,
+    shiny,
+    bslib,
+    rsconnect
 Suggests:
-    pkgdown,
-    quarto
+    pkgdown
 Remotes:
-    rstudio/gradethis
+    rstudio/gradethis,
+    rundel/learnrhash

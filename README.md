@@ -78,6 +78,46 @@ The quizzes now include automatic submission to Google Forms for tracking studen
 
 ## Deployment Process
 
+### Automated Deployment (CI/CD)
+
+Quizzes are automatically deployed to shinyapps.io via GitHub Actions when changes are pushed to the `main` or `dev` branches.
+
+#### Setting Up Automated Deployment
+
+1. **Get shinyapps.io credentials**:
+   - Go to [shinyapps.io](https://www.shinyapps.io/) → Account → Tokens
+   - Click "Add Token" to generate new credentials
+   - Copy the `name`, `token`, and `secret` values
+
+2. **Configure GitHub Secrets**:
+   - Go to your GitHub repository → Settings → Secrets and variables → Actions
+   - Add these repository secrets:
+     - `SHINYAPPS_ACCOUNT`: Your shinyapps.io account name
+     - `SHINYAPPS_TOKEN`: The token from shinyapps.io  
+     - `SHINYAPPS_SECRET`: The secret from shinyapps.io
+
+3. **Add new quizzes to automated deployment**:
+   - Edit `build.R` and add your new quiz:
+   ```r
+   # Deploy new quiz module
+   rsconnect::deployDoc(
+     doc = "modules/md-02-quiz.Rmd",
+     appName = "openwashdata-module2-quiz", 
+     forceUpdate = TRUE
+   )
+   ```
+
+#### How the CI/CD Workflow Works
+
+The GitHub Action (`.github/workflows/deploy-quiz.yml`):
+- **Triggers**: On pushes to `main`/`dev` branches or manual workflow dispatch
+- **Environment**: Sets up R 4.3.2 with required packages from DESCRIPTION
+- **Authentication**: Uses repository secrets to authenticate with shinyapps.io
+- **Deployment**: Executes `build.R` to deploy all applications defined there
+- **Logging**: Uploads deployment logs if any failures occur
+
+### Manual Deployment
+
 This quiz system uses a two-part deployment approach:
 
 ### 1. Deploy Individual Quizzes
