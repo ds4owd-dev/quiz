@@ -10,3 +10,10 @@ docs/
 !docs/*.md
 *.dcf
 *.html
+
+# renv - using DESCRIPTION for dependencies instead
+renv/
+renv.lock
+
+# Shiny deployment
+rsconnect/
