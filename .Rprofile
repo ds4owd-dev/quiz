@@ -1,1 +1,1 @@
-source("renv/activate.R")
+# renv disabled - using DESCRIPTION for dependencies
