@@ -54,16 +54,48 @@ The quizzes now include automatic submission to Google Forms for tracking studen
 - **Automatic submission**: Results are submitted to Google Form via POST request
 - **Modular components**: Reusable username and submission components
 
-### Google Form Setup
+### Configuring Google Form Integration
+
+To connect quizzes to your own Google Form, update the configuration in `modules/_submission.Rmd`.
+
+#### 0. Google Form Structure
+
+Your Google Form should have exactly 3 questions:
+1. **Tutorial/Module ID** (text field)
+2. **GitHub username** (text field)
+3. **Learnrhash** (long text field for quiz results)
+
+#### 1. Find Entry IDs
+
+To get the entry IDs for your form fields:
+
+1. **Open your Google Form** (the live form, not edit mode)
+2. **Open browser inspector** (F12 or right-click → Inspect)
+3. **Search for "entry"** in the HTML (Ctrl+F)
+4. **Copy the entry IDs** - they appear as `entry.1234567890`
+
+The entry IDs will be in the order your questions are set up in the form.
+
+#### 2. Update form_url and Entry IDs
+
+Update the variables at the top of `modules/_submission.Rmd`:
+
+```r
+# Google Form setup
+form_url <- "https://docs.google.com/forms/d/e/YOUR-FORM-ID/formResponse"
+
+# Entry ID mappings
+tutorial_id_entry_id <- "entry.YOUR-MODULE-ID"         # For module name
+github_username_entry_id <- "entry.YOUR-USERNAME-ID"   # For GitHub username
+learnrhash_entry_id <- "entry.YOUR-LEARNRHASH-ID"      # For quiz results
+```
+
+#### Example Current Setup
 - **Form URL**: https://docs.google.com/forms/d/e/1FAIpQLScnw9R8wMU5SfFqNVXGeEkiIygLTB_Dc6jWBmbwEeHuekBDzg/formResponse
-- **Entry IDs** (tidy format): 
-  - `entry.1315905314` - Raw learnrhash
-  - `entry.61564704` - GitHub username
-  - `entry.1169139257` - Module name
-- **Data structure**: Each submission creates a row with:
-  - Hash column: Complete learnrhash for decoding
-  - Username column: GitHub username for filtering
-  - Module column: Module identifier (fetched from tutorial ID metadata)
+- **Entry IDs**: 
+  - `entry.1169139257` - Module name (1st question)
+  - `entry.61564704` - GitHub username (2nd question)
+  - `entry.1315905314` - Learnrhash (3rd question)
 
 ## Deployment Process
 

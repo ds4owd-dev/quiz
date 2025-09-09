@@ -17,3 +17,7 @@ renv.lock
 
 # Shiny deployment
 rsconnect/
+
+venv/
+
+legacy/

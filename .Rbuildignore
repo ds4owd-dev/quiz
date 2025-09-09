@@ -2,6 +2,8 @@
 ^renv\.lock$
 ^_pkgdown\.yml$
 ^docs$
+^venv$
+^legacy$
 ^pkgdown$
 ^\.github$
 ^.*\.Rproj$

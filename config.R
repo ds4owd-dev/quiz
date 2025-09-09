@@ -14,3 +14,14 @@ base_url <- "https://hjj91u-nicolo-massari.shinyapps.io/"
 
 # Main app configuration
 main_app_name <- "openwashdata-quiz-hub"
+
+# in modules/_submission.Rmd
+#
+#  # Google Form setup
+#  form_url <- "https://docs.google.com/forms/d/e/1FAIpQLScnw9R8wMU5SfFqNVXGeEkiIygLTB_Dc6jWBmbwEeHuekBDzg/formResponse"
+#
+#  # Entry ID mappings
+#  learnrhash_entry_id <- "entry.1315905314"
+#  github_username_entry_id <- "entry.61564704"
+#  tutorial_id_entry_id <- "entry.1169139257"
+#

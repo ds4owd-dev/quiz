@@ -1,3 +1,13 @@
+```{r, context="server"}
+# Google Form setup
+form_url <- "https://docs.google.com/forms/d/e/1FAIpQLScnw9R8wMU5SfFqNVXGeEkiIygLTB_Dc6jWBmbwEeHuekBDzg/formResponse"
+
+# Entry ID mappings
+learnrhash_entry_id <- "entry.1315905314"
+github_username_entry_id <- "entry.61564704"
+tutorial_id_entry_id <- "entry.1169139257"
+```
+
 ## Quiz Submission
 
 Please click the button below to submit your quiz results:
@@ -35,11 +45,10 @@ observeEvent(input$submit, {
 
     
     # Prepare form data for Google Form with separate fields
-    form_data <- list(
-      "entry.1315905314" = learnrhash_submission,  # Raw learnrhash only
-      "entry.61564704" = github_username,           # GitHub username
-      "entry.1169139257" = tutorial_id              # Module name
-    )
+    form_data <- list()
+    form_data[[learnrhash_entry_id]] <- learnrhash_submission
+    form_data[[github_username_entry_id]] <- github_username
+    form_data[[tutorial_id_entry_id]] <- tutorial_id
     
     # Submit to Google Form
     response <- httr::POST(form_url, body = form_data, encode = "form")
