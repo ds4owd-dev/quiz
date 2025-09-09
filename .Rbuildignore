@@ -6,4 +6,4 @@
 ^\.github$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-*.html
+.*\.html$
