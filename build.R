@@ -2,14 +2,14 @@
 
 deploy_quiz <- function(module_name) {
   module_path <- paste0(file.path("modules", module_name), ".Rmd")
-  rsconnect::deployDoc(
-    doc = module_path,
+  rsconnect::deployApp(
     appFiles = c(
       "modules/_github_username.Rmd",
       "modules/_submission.Rmd",
       module_path,
       "modules/github_usernames.csv"
     ),
+    appPrimaryDoc = module_path,
     appName = module_name,
     forceUpdate = TRUE
   )
