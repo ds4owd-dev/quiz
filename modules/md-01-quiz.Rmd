@@ -1,8 +1,12 @@
 ---
-title: "Module 1 Quiz: Quarto Basics for openwashdata"
+title: "Module 1: Quarto Basics"
 output: learnr::tutorial
 runtime: shiny_prerendered
 description: "Test your understanding of Quarto basics for openwashdata package documentation"
+resource_files:
+  - github_usernames.csv
+  - _github_username.Rmd
+  - _submission.Rmd
 tutorial:
   id: "module1-quarto-basics"
 ---
@@ -43,10 +47,10 @@ This quiz tests your understanding of Quarto basics for openwashdata package doc
 
 ```{r yaml-question}
 question("Which of the following is the correct YAML header for an openwashdata package README?",
-  answer("---\noutput: html_document\n---"),
-  answer("---\noutput: github_document\n---", correct = TRUE),
-  answer("---\nformat: html\n---"),
-  answer("---\nformat: markdown\n---"),
+  answer("`---`\n`output: html_document`\n`---`"),
+  answer("`---`\n`output: github_document`\n`---`", correct = TRUE),
+  answer("`---`\n`format: html`\n`---`"),
+  answer("`---`\n`format: markdown`\n`---`"),
   allow_retry = TRUE,
   incorrect = "Think about what output format is typically used for GitHub README files.",
   correct = "Correct! The github_document output format is used for README files that will be displayed on GitHub."

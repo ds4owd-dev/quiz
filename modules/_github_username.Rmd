@@ -1,7 +1,11 @@
 ```{r github-username-setup, include=FALSE}
 # Read GitHub usernames from CSV
 tryCatch({
-  csv_path <- system.file("extdata", "github_usernames.csv", package = "quiz")
+  # Try deployed path first, then fallback to local path
+  csv_path <- "github_usernames.csv"
+  if (!file.exists(csv_path)) {
+    csv_path <- "modules/github_usernames.csv"
+  }
   github_users <- read.csv(csv_path, stringsAsFactors = FALSE)
   # Create choices with display format: "First Last (username)"
   username_choices <- setNames(
@@ -41,7 +45,11 @@ div(
 # Read GitHub usernames in server context
 username_choices <- reactive({
   tryCatch({
-    csv_path <- system.file("extdata", "github_usernames.csv", package = "quiz")
+    # Try deployed path first, then fallback to local path
+    csv_path <- "github_usernames.csv"
+    if (!file.exists(csv_path)) {
+      csv_path <- "modules/github_usernames.csv"
+    }
     github_users <- read.csv(csv_path, stringsAsFactors = FALSE)
     # Create choices with display format: "First Last (username)"
     setNames(

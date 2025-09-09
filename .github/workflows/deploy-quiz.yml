@@ -1,9 +1,9 @@
 name: Deploy Quiz to shinyapps.io
 
 on:
-  push:
-    branches: [main, dev]
-  workflow_dispatch:  # Allow manual deployment
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  workflow_dispatch:
 
 jobs:
   deploy:

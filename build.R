@@ -1,18 +1,28 @@
+# Load configuration
+source("config.R")
+
+# HELPER
+
+deploy_quiz <- function(module_name) {
+  module_path <- paste0(file.path("modules", module_name), ".Rmd")
+  rsconnect::deployDoc(
+    doc = module_path,
+    appName = module_name,
+    forceUpdate = TRUE,
+    logLevel = "verbose"
+  )
+}
+
+
+# QUIZ DEPLOYMENT
+
 rsconnect::deployApp(
-  appName = "openwashdata-quiz-hub",
+  appName = main_app_name,
   forceUpdate = TRUE
 )
 
-rsconnect::deployDoc(
-  doc = "modules/md-01-quiz.Rmd",
-  appName = "openwashdata-module1-quiz",
-  forceUpdate = TRUE
-)
+for (quiz in quiz_names) {
+  deploy_quiz(quiz)
+}
 
-# Example of what to add when creating new quiz:
-
-#rsconnect::deployDoc(
-#  doc = "modules/md-02-quiz.Rmd",
-#  appName = "openwashdata-module2-quiz",
-#  forceUpdate = TRUE
-#)
+# To add new quizzes, edit config.R
