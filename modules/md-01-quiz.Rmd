@@ -9,7 +9,7 @@ tutorial:
 
 ```{r setup, include=FALSE}
 library(learnr)
-library(tidyverse)
+library(dplyr)
 library(gapminder)
 library(knitr)
 library(gradethis)
@@ -88,7 +88,7 @@ question("Which chunk options would you use to hide both code and messages when 
 Use the gapminder dataset to create a summary table showing the average life expectancy by continent in 2007:
 
 ```{r create-table-setup}
-library(tidyverse)
+library(dplyr)
 library(gapminder)
 library(knitr)
 ```
@@ -131,7 +131,7 @@ grade_this_code()
 Calculate the mean GDP per capita for Switzerland in 2007:
 
 ```{r inline-code-setup}
-library(tidyverse)
+library(dplyr)
 library(gapminder)
 ```
 
@@ -164,7 +164,7 @@ grade_this_code()
 Create a line plot showing the life expectancy over time for African countries with a population greater than 30 million in 2007:
 
 ```{r visualization-setup}
-library(tidyverse)
+library(dplyr)
 library(gapminder)
 
 # Identify African countries with population > 30 million in 2007

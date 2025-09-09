@@ -15,7 +15,8 @@ deploy_quiz <- function(module_name) {
     appPrimaryDoc = module_path,
     appName = module_name,
     appMode = "rmd-shiny",
-    forceUpdate = TRUE
+    forceUpdate = TRUE,
+    logLevel = "verbose"
   )
 }
 

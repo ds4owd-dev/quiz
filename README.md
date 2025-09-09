@@ -24,8 +24,7 @@ All required packages are defined in `DESCRIPTION` and automatically installed d
 
 ```r
 # Install from DESCRIPTION file
-install.packages("remotes")
-remotes::install_deps()
+devtools::install_github("ds4owd-dev/quiz")
 ```
 
 ## ShinyApps.io Authentication
