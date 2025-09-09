@@ -23,7 +23,8 @@ Imports:
     rmarkdown,
     shiny,
     bslib,
-    rsconnect
+    rsconnect,
+    yaml
 Suggests:
     pkgdown
 Remotes:

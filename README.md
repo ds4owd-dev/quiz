@@ -6,26 +6,26 @@ This directory contains interactive learnr quizzes for the openwashdata course a
 
 ## Structure
 
-- `app.R` - Quiz landing page that links to all deployed quizzes
+- `app.R` - Quiz landing page that automatically displays all configured quizzes
+- `build.R` - Deployment script with helper functions for automated deployment
+- `config.R` - Shared configuration file defining all available quizzes
 - `modules/` - Directory containing all quiz files
   - `md-01-quiz.Rmd` - Module 1 quiz on Quarto basics (learnr tutorial)
-  - `_github_username.Rmd` - Reusable component for GitHub username input
+  - `_github_username.Rmd` - Reusable component for GitHub username input with CSV data
   - `_submission.Rmd` - Reusable component for quiz submission
+  - `github_usernames.csv` - Student GitHub username database
   - Additional quiz files can be added as `md-XX-quiz.Rmd`
 
 ## Required Packages
 
 Make sure these packages are installed:
 
-```r
-install.packages(c("learnr", "tidyverse", "gapminder", "knitr", "rsconnect", "httr", "digest"))
+All required packages are defined in `DESCRIPTION` and automatically installed during deployment. For local development:
 
-# Install packages from GitHub
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-remotes::install_github("rstudio/gradethis")
-remotes::install_github("rundel/learnrhash")
+```r
+# Install from DESCRIPTION file
+install.packages("remotes")
+remotes::install_deps()
 ```
 
 ## ShinyApps.io Authentication
@@ -53,7 +53,6 @@ The quizzes now include automatic submission to Google Forms for tracking studen
 - **GitHub username collection**: Students enter their GitHub username at the start
 - **Learnrhash generation**: Quiz responses are encoded using learnrhash
 - **Automatic submission**: Results are submitted to Google Form via POST request
-- **Error handling**: Provides fallback hash if submission fails
 - **Modular components**: Reusable username and submission components
 
 ### Google Form Setup
@@ -66,15 +65,6 @@ The quizzes now include automatic submission to Google Forms for tracking studen
   - Hash column: Complete learnrhash for decoding
   - Username column: GitHub username for filtering
   - Module column: Module identifier (fetched from tutorial ID metadata)
-- **Authentication**: None required - form accepts responses from anyone with the link
-
-### Advantages of Google Forms
-- **No authentication needed**: Forms can accept anonymous submissions
-- **Tidy data format**: Each field in its own column for easy analysis
-- **Reliable**: Google handles all the backend infrastructure
-- **Easy to view**: Responses automatically appear in Google Sheets
-- **Error-resistant**: Works even with network issues
-- **Easy filtering**: Separate columns for username and module
 
 ## Deployment Process
 
@@ -97,13 +87,11 @@ Quizzes are automatically deployed to shinyapps.io via GitHub Actions when chang
      - `SHINYAPPS_SECRET`: The secret from shinyapps.io
 
 3. **Add new quizzes to automated deployment**:
-   - Edit `build.R` and add your new quiz:
+   - Edit `config.R` and add your new quiz:
    ```r
-   # Deploy new quiz module
-   rsconnect::deployDoc(
-     doc = "modules/md-02-quiz.Rmd",
-     appName = "openwashdata-module2-quiz", 
-     forceUpdate = TRUE
+   quiz_names <- c(
+     "md-01-quiz",
+     "md-02-quiz"  # Add new quiz here
    )
    ```
 
@@ -118,49 +106,26 @@ The GitHub Action (`.github/workflows/deploy-quiz.yml`):
 
 ### Manual Deployment
 
-This quiz system uses a two-part deployment approach:
-
-### 1. Deploy Individual Quizzes
-
-Each quiz is deployed as a separate learnr tutorial using `deployDoc()`:
+For manual deployment, simply run the build script which handles everything automatically:
 
 ```r
-# Deploy Module 1 quiz
-rsconnect::deployDoc(
-  doc = "modules/md-01-quiz.Rmd",
-  appName = "openwashdata-module1-quiz",
-  forceUpdate = TRUE
-)
+# Deploy all quizzes and landing page
+source("build.R")
 ```
 
-For additional quizzes:
-```r
-# Deploy Module 2 quiz (when created)
-rsconnect::deployDoc(
-  doc = "modules/md-02-quiz.Rmd",
-  appName = "openwashdata-module2-quiz",
-  forceUpdate = TRUE
-)
-```
-
-### 2. Deploy the Landing Page
-
-The landing page is deployed as a regular Shiny app using `deployApp()`:
-
-```r
-rsconnect::deployApp(
-  appName = "openwashdata-quiz-hub",
-  forceUpdate = TRUE
-)
-```
+The deployment system features:
+- **Automatic file bundling**: CSV files and dependencies are automatically included
+- **Streamlined process**: One script deploys everything configured in `config.R`
 
 ## Adding New Quizzes
 
-To add a new quiz module:
+The system now uses automatic configuration - adding a new quiz is simple:
 
-1. **Create the quiz file** (e.g., `modules/md-02-quiz.Rmd`) using this template:
+### 1. Create the Quiz File
 
-```r
+Create `modules/md-02-quiz.Rmd` with the standardized YAML header:
+
+```yaml
 ---
 title: "Module 2: Your Title"
 output: learnr::tutorial
@@ -169,68 +134,34 @@ description: "Your quiz description"
 tutorial:
   id: "module2-your-id"
 ---
-
-`​``{r setup, include=FALSE}
-library(learnr)
-library(tidyverse)
-library(gradethis)
-library(learnrhash)
-library(httr)
-
-tutorial_options(
-  exercise.eval = FALSE,
-  exercise.checker = gradethis::grade_learnr
-)
-
-knitr::opts_chunk$set(echo = FALSE)
-
-# Google Form setup
-form_url <- "https://docs.google.com/forms/d/e/1FAIpQLScnw9R8wMU5SfFqNVXGeEkiIygLTB_Dc6jWBmbwEeHuekBDzg/formResponse"
-`​``
-
-## Introduction
-
-Your introduction text here.
-
-`​``{r github-username, child='_github_username.Rmd'}
-`​``
-
-## Your Quiz Content
-
-Add your questions and exercises here...
-
-`​``{r submission-section, child='_submission.Rmd'}
-`​``
-
-## Summary
-
-Your summary here.
 ```
-2. **Deploy the quiz**:
-   ```r
-   rsconnect::deployDoc(
-     doc = "md-02-quiz.Rmd",
-     appName = "openwashdata-module2-quiz",
-     forceUpdate = TRUE
-   )
-   ```
-3. **Update the landing page** by adding the new quiz to the `quizzes` list in `app.R`:
-   ```r
-   list(
-     id = "module2",
-     title = "Module 2: Your Title",
-     description = "Quiz description",
-     url = "https://your-account.shinyapps.io/openwashdata-module2-quiz/",
-     available = TRUE
-   )
-   ```
-4. **Redeploy the landing page**:
-   ```r
-   rsconnect::deployApp(
-     appName = "openwashdata-quiz-hub",
-     forceUpdate = TRUE
-   )
-   ```
+
+Add your quiz content following the existing pattern, including:
+- GitHub username collection: `{r github-username, child='_github_username.Rmd'}`
+- Quiz submission: `{r submission-section, child='_submission.Rmd'}`
+
+### 2. Update Configuration
+
+Edit `config.R` to include your new quiz:
+
+```r
+quiz_names <- c(
+  "md-01-quiz",
+  "md-02-quiz"  # Add new quiz here
+)
+```
+
+### 3. Deploy
+
+Run the build script to deploy everything:
+
+```r
+source("build.R")
+```
+
+This will:
+- Automatically deploy the new quiz
+- Update the landing page to show the new quiz
 
 ## Local Testing
 

@@ -1,3 +1,6 @@
+# Load configuration
+source("config.R")
+
 # HELPER
 
 deploy_quiz <- function(module_name) {
@@ -20,12 +23,12 @@ deploy_quiz <- function(module_name) {
 # QUIZ DEPLOYMENT
 
 rsconnect::deployApp(
-  appName = "openwashdata-quiz-hub",
+  appName = main_app_name,
   forceUpdate = TRUE
 )
 
-deploy_quiz("md-01-quiz")
+for (quiz in quiz_names) {
+  deploy_quiz(quiz)
+}
 
-# Example of what to add when creating new quiz:
-
-#deploy_quiz("md-02-quiz")
+# To add new quizzes, edit config.R

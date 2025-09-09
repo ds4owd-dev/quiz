@@ -2,25 +2,61 @@
 
 library(shiny)
 library(bslib)
+library(yaml)
 
-# Define available quizzes with their deployed URLs
-quizzes <- list(
-  list(
-    id = "module1",
-    title = "Module 1: Quarto Basics",
-    description = "Test your understanding of Quarto basics for openwashdata package documentation",
-    url = "https://hjj91u-nicolo-massari.shinyapps.io/openwashdata-module1-quiz/",
-    available = TRUE
-  )
-  # Add more quizzes here as you deploy them
-  # list(
-  #   id = "module2",
-  #   title = "Module 2: Data Visualization",
-  #   description = "Learn about creating effective visualizations",
-  #   url = "https://hjj91u-nicolo-massari.shinyapps.io/openwashdata-module2-quiz/",
-  #   available = FALSE
-  # )
-)
+# Load configuration
+source("config.R")
+
+# Function to extract quiz metadata from Rmd files
+extract_quiz_metadata <- function(quiz_name) {
+  rmd_path <- file.path("modules", paste0(quiz_name, ".Rmd"))
+  
+  if (!file.exists(rmd_path)) {
+    return(NULL)
+  }
+  
+  # Read the Rmd file and extract YAML header
+  rmd_content <- readLines(rmd_path)
+  yaml_start <- which(rmd_content == "---")[1]
+  yaml_end <- which(rmd_content == "---")[2]
+  
+  if (is.na(yaml_start) || is.na(yaml_end) || yaml_start >= yaml_end) {
+    return(NULL)
+  }
+  
+  yaml_content <- paste(rmd_content[(yaml_start + 1):(yaml_end - 1)], collapse = "\n")
+  yaml_data <- yaml::yaml.load(yaml_content)
+  
+  # Extract title and description
+  title <- yaml_data$title %||% paste("Quiz:", quiz_name)
+  description <- yaml_data$description %||% "Interactive quiz module"
+  
+  return(list(title = title, description = description))
+}
+
+# Auto-generate quiz list from quiz names
+generate_quiz_list <- function(quiz_names) {
+  # Generate quiz list with metadata
+  quiz_list <- lapply(quiz_names, function(quiz_name) {
+    metadata <- extract_quiz_metadata(quiz_name)
+    
+    # Generate URL based on quiz name
+    quiz_url <- paste0(base_url, quiz_name, "/")
+    
+    list(
+      id = quiz_name,
+      title = metadata$title %||% paste("Quiz:", quiz_name),
+      description = metadata$description %||% "Interactive quiz module",
+      url = quiz_url,
+      available = TRUE
+    )
+  })
+  
+  return(quiz_list)
+}
+
+# Generate quiz list automatically from config
+quizzes <- generate_quiz_list(quiz_names)
 
 # UI
 ui <- page_navbar(
