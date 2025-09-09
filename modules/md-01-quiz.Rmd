@@ -3,6 +3,10 @@ title: "Module 1: Quarto Basics"
 output: learnr::tutorial
 runtime: shiny_prerendered
 description: "Test your understanding of Quarto basics for openwashdata package documentation"
+resource_files:
+  - github_usernames.csv
+  - _github_username.Rmd
+  - _submission.Rmd
 tutorial:
   id: "module1-quarto-basics"
 ---
