@@ -6,6 +6,7 @@ description: "Test your understanding of Quarto basics for openwashdata package 
 resource_files:
   - github_usernames.csv
   - _github_username.Rmd
+  - _participation.Rmd
   - _submission.Rmd
 tutorial:
   id: "module1-quarto-basics"
@@ -37,6 +38,9 @@ This quiz tests your understanding of Quarto basics for openwashdata package doc
 **Important**: Please enter your GitHub username below and click "Submit Quiz" at the end to record your completion.
 
 ```{r github-username, child='_github_username.Rmd'}
+```
+
+```{r participation, child='_participation.Rmd'}
 ```
 
 ## Section 1: Quarto Fundamentals
